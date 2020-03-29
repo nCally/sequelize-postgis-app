@@ -11,6 +11,7 @@ export default function(){
     const [allow, toggle] = useState(false);
 
     async function sendToServer(data){
+        console.log(data.longitude)
         socket.emit("myLocation", {
             data,
             name:"Cally",
@@ -39,25 +40,25 @@ export default function(){
     }
 
     useEffect(function(){
-        // occur after every 60 seconds
-        const interval = setInterval(accessible, 60000);
-        return () => clearInterval(interval)
-    }, [])
+        if(allow){
+            // occur after every 60 seconds
+            const interval = setInterval(accessible, 30000);
+            return () => clearInterval(interval)
+        }
+    }, [allow])
 
     return(
         <>
             <View style={styles.body}>
                 <View style={styles.wrapper}>
-                    <View></View>
                     <View>
-                        <Text style={{textAlign:"center"}}>Stay connected to HQ</Text>
-                        <View></View>
-                        <Text style={{textAlign:"center",fontWeight:"700",fontSize:18}}></Text>
+                        <Text style={styles.stayConnect}>Stay connected to the office</Text>
                     </View>
-                    <View style={{display:"flex",flexDirection:"row",justifyContent:"center"}}>
+                    <View style={{height:30}}></View>
+                    <View>
                         <TouchableOpacity onPress={() => toggle(!allow)}>
                             <View style={styles.btn}>
-                                <Text style={{color:"white",fontSize:18,textTransform:"uppercase",fontWeight:"700"}}>
+                                <Text style={{color:"#83B799",fontSize:24,fontFamily:"Poppins",}}>
                                     {
                                         allow ? "Disconnect" : "Connect"
                                     }
@@ -65,6 +66,7 @@ export default function(){
                             </View>
                         </TouchableOpacity>
                     </View>
+                    <View style={{height:72}}></View>
                 </View>
             </View>
         </>
@@ -74,25 +76,23 @@ export default function(){
 const styles = StyleSheet.create({
     body:{
         flex:1,
-        backgroundColor:"white",
+        backgroundColor:"#272324",
         padding:10,
-        borderRadius:5
+        borderRadius:5,
+        justifyContent:"flex-end"
     },
     wrapper:{
-        flex:1,
-        backgroundColor:"#f6f6f6",
-        justifyContent:"space-around",
-        padding:10
+        padding:20
+    },
+    stayConnect:{
+        fontSize:36,
+        fontFamily:"Poppins",
+        color:"#f2f2f2"
     },
     btn:{
-        backgroundColor:"green",
-        display:"flex",
-        flexDirection:"row",
-        justifyContent:"center",
+        backgroundColor:"transparent",
         paddingBottom:10,
         paddingTop:10,
-        paddingLeft:32,
-        paddingRight:32,
-        borderRadius:5
+        paddingRight:20
     }
 })
